@@ -4,6 +4,7 @@ from hashlib import sha1
 from time import time
 from typing import TYPE_CHECKING
 from uuid import UUID
+import logging
 
 from django.contrib.postgres.functions import TransactionNow
 from django.db import connections
@@ -21,6 +22,7 @@ from .transaction import AtomicCache
 if TYPE_CHECKING:
     from django.db.models.expressions import BaseExpression 
 
+logger = logging.getLogger(__name__)
 
 class UncachableQuery(Exception):
     pass
@@ -118,8 +120,12 @@ def get_multi_tenant_table_cache_key(db_alias, table):
     :rtype: int
     """
     cache_key = get_table_cache_key(db_alias, table)
-    if tenant_handler.get_active_schema_for_table(table) == tenant_handler.public_schema_name:
-        tenant_handler.public_schema_keys.add(cache_key)
+    try:
+        active_schema = tenant_handler.get_active_schema_for_table(table)
+        if active_schema == tenant_handler.public_schema_name:
+            tenant_handler.public_schema_keys.add(cache_key)
+    except ValidationError:
+        logger.info(f'Could not determine schema to use for table: {table}')
 
     return cache_key
 
@@ -303,7 +309,7 @@ def _invalidate_tables(cache, db_alias, tables):
     now = time()
     get_table_cache_key = cachalot_settings.CACHALOT_TABLE_KEYGEN
     cache.set_many(
-        {get_table_cache_key(db_alias, t): now for t in tables},
+        {get_table_cache_key(db_alias, table): now for table in tables},
         cachalot_settings.CACHALOT_TIMEOUT)
 
     if isinstance(cache, AtomicCache):
