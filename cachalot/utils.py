@@ -7,6 +7,7 @@ from uuid import UUID
 import logging
 
 from django.contrib.postgres.functions import TransactionNow
+from django.core.exceptions import ValidationError
 from django.db import connections
 from django.db.models import Exists, QuerySet, Subquery
 from django.db.models.expressions import RawSQL
