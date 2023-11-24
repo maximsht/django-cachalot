@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from django.contrib.postgres.functions import TransactionNow
-from django.db import connections
 from django.db.models import Exists, QuerySet, Subquery
 from django.db.models.expressions import RawSQL
 from django.db.models.functions import Now
@@ -36,23 +35,42 @@ CACHABLE_PARAM_TYPES = {
 }
 UNCACHABLE_FUNCS = {Now, TransactionNow}
 
-try:
-    # TODO Drop after Dj30 drop
-    from django.contrib.postgres.fields.jsonb import JsonAdapter
-    CACHABLE_PARAM_TYPES.update((JsonAdapter,))
-except ImportError:
-    pass
 
 try:
-    from psycopg2 import Binary
-    from psycopg2.extras import (
-        NumericRange, DateRange, DateTimeRange, DateTimeTZRange, Inet, Json)
-except ImportError:
-    pass
-else:
+    from psycopg.dbapi20 import Binary
+
+    from django.db.backends.postgresql.psycopg_any import (
+        NumericRange, DateRange, DateTimeRange, DateTimeTZRange, Inet,
+    )
+    
+    from psycopg.types.numeric import (
+        Int2, Int4, Int8, Float4, Float8,
+    )
+
+    from ipaddress import (
+        IPv4Address,
+        IPv6Address,
+    )
+
+    from psycopg.types.json import (
+        Json, Jsonb,
+    )
+
     CACHABLE_PARAM_TYPES.update((
-        Binary, NumericRange, DateRange, DateTimeRange, DateTimeTZRange, Inet,
-        Json,))
+        NumericRange, DateRange, DateTimeRange, DateTimeTZRange, Inet, Json, Jsonb,
+        Int2, Int4, Int8, Float4, Float8, IPv4Address, IPv6Address,
+        Binary,
+    ))
+except ImportError:
+    try:
+        from psycopg2 import Binary
+        from psycopg2.extras import (
+            NumericRange, DateRange, DateTimeRange, DateTimeTZRange, Inet, Json)
+        CACHABLE_PARAM_TYPES.update((
+            Binary, NumericRange, DateRange, DateTimeRange, DateTimeTZRange, Inet,
+            Json,))
+    except ImportError:
+        pass
 
 
 def check_parameter_types(params):
@@ -150,13 +168,7 @@ def _find_rhs_lhs_subquery(side):
     elif h_class is QuerySet:
         return side.query
     elif h_class in (Subquery, Exists):  # Subquery allows QuerySet & Query
-        try:
-            return side.query.query if side.query.__class__ is QuerySet else side.query
-        except AttributeError:  # TODO Remove try/except closure after drop Django 2.2
-            try:
-                return side.queryset.query
-            except AttributeError:
-                return None
+        return side.query.query if side.query.__class__ is QuerySet else side.query
     elif h_class in UNCACHABLE_FUNCS:
         raise UncachableQuery
 
@@ -225,6 +237,8 @@ def _flatten(expression: 'BaseExpression'):
 
 
 def _get_tables(db_alias, query, compiler=False):
+    from django.db import connections
+
     if query.select_for_update or (
             not cachalot_settings.CACHALOT_CACHE_RANDOM
             and '?' in query.order_by):

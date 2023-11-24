@@ -65,11 +65,9 @@ in a multi-processes project, if you use RQ or Celery for instance.
 Filebased
 .........
 
-Filebased, a simple persistent cache implemented in Django, has a small bug
+Filebased, a simple persistent cache implemented in Django, had a small bug
 (`#25501 <https://code.djangoproject.com/ticket/25501>`_):
-it cannot cache some objects, like psycopg2 ranges.
-If you use range fields from `django.contrib.postgres` and your Django
-version is affected by this bug, you need to add the tables using range fields
+it cannot cache some objects, like psycopg2 ranges. This bug was fixed in 2015, if you sill use an affected Django version and you use range fields from `django.contrib.postgres`, you need to add the tables using range fields
 to :ref:`CACHALOT_UNCACHABLE_TABLES`.
 
 .. _MySQL:
@@ -105,7 +103,7 @@ in that query by comparing with models registered by Django.
 
 This is quite robust, so if a query is not invalidated automatically
 by this system, please :ref:`send a bug report <Reporting>`.
-In the meantime, you can use :ref:`the API <API>` to manually invalidate
+In the meantime, you can use :ref:`the API <Api>` to manually invalidate
 the tables where data has changed.
 
 However, this simple system can be too efficient in some very rare cases
