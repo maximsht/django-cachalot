@@ -117,7 +117,7 @@ class TenantHandler(local):
             return self.public_schema_name
         else:
             # Could not determine which schema to use for cache key
-            raise ValidationError('Could not determine schema to use for table: {}'.format(table))
+            return 'undefined'
 
 
 tenant_handler = TenantHandler()
