@@ -1,0 +1,22 @@
+
+zpython:S134‡"]Refactor this code to not nest more than 4 "if", "for", "while", "try" and "with" statements.(ÿ»ôàÿÿÿÿÿ
+Xpython:S1131"@Remove the useless trailing whitespaces at the end of this line.(—ìöÑ
+]python:S1131-"@Remove the useless trailing whitespaces at the end of this line.(µáÎüÿÿÿÿ
+/python:S1720"Add a docstring to this module.
+;python:S1720"Add a docstring to this class.(û¬Ğùúÿÿÿÿ
+6python:S1720"Add a docstring to this class.(ÔÓ ã
+9python:S1720L"!Add a docstring to this function.(˜úé¡
+?python:S1720¤"!Add a docstring to this function.(÷üïòıÿÿÿÿ
+Spython:S139ª"6Move this trailing comment on the previous empty line.(À¢‰ÿÿÿÿÿ
+:python:S1720°"!Add a docstring to this function.(ğ®ÀŸ
+mpython:S3776°"TRefactor this function to reduce its Cognitive Complexity from 18 to the 15 allowed.(ğ®ÀŸ
+Apython:S108¹")Either remove or fill this block of code.(ã‘Û¾
+:python:S1720È"!Add a docstring to this function.(©ì’˜
+?python:S1720Ï"!Add a docstring to this function.(¼ €Åùÿÿÿÿ
+?python:S1720Ö"!Add a docstring to this function.(‚Ö²©üÿÿÿÿ
+?python:S1720ï"!Add a docstring to this function.(ô•¦İúÿÿÿÿ
+opython:FunctionComplexityï"DFunction has a complexity of 18 which is greater than 15 authorized.(ô•¦İúÿÿÿÿ
+rpython:S3776ï"TRefactor this function to reduce its Cognitive Complexity from 35 to the 15 allowed.(ô•¦İúÿÿÿÿ
+Npython:S139–"6Move this trailing comment on the previous empty line.( ¼³Ú
+:python:S1720²"!Add a docstring to this function.(ÜÂ™›
+:python:S1720¹"!Add a docstring to this function.(Ò’¬

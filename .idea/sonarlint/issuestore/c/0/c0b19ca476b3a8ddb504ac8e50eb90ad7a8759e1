@@ -1,0 +1,11 @@
+
+hpython:LineLength2"FThe line contains 124 characters which is greater than 120 authorized.(Ò©¿¦ÿÿÿÿÿ
+hpython:LineLength3"FThe line contains 121 characters which is greater than 120 authorized.(•ßä©ıÿÿÿÿ
+hpython:LineLengthI"FThe line contains 181 characters which is greater than 120 authorized.(ÿÜÛûÿÿÿÿ
+/python:S1720"Add a docstring to this module.
+qpython:S1578"aRename this module to match this regular expression: "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$".
+>python:S1720"!Add a docstring to this function.(Ú‘‹ôùÿÿÿÿ
+>python:S1720"!Add a docstring to this function.(Ñ Îøÿÿÿÿ
+\python:S1707"?Add a citation of the person who can best explain this comment.(ï¯©Çùÿÿÿÿ
+Qpython:S1135"4Complete the task associated to this "TODO" comment.(ï¯©Çùÿÿÿÿ
+6python:S1720""Add a docstring to this class.(Û±· 

@@ -1,5 +1,20 @@
 What’s new in django-cachalot?
 ==============================
+2.6.3
+-----
+
+- Support for Django 5.1
+
+
+2.6.2
+-----
+
+- Support for Python 3.12 and Django 5.0
+
+2.6.1
+-----
+
+- Hot fix when Django is externally imported due to connections import (#242)
 
 2.6.0
 -----
