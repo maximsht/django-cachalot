@@ -20,7 +20,7 @@ from pytz import UTC
 from cachalot.cache import cachalot_caches
 from ..settings import cachalot_settings
 from ..utils import UncachableQuery
-from .models import Test, TestChild, TestParent, UnmanagedModel
+from .models import SomeChoices, Test, TestChild, TestParent, UnmanagedModel
 from .test_utils import TestUtilsMixin, FilteredTransactionTestCase
 
 from .tests_decorators import all_final_sql_checks, with_final_sql_check, no_final_sql_check
@@ -243,13 +243,25 @@ class ReadTestCase(TestUtilsMixin, FilteredTransactionTestCase):
                            Permission, ContentType)
         self.assert_query_cached(qs, [self.t1])
 
+    def test_django_enums(self):
+        t = Test.objects.create(name='test1', a_choice=SomeChoices.foo)
+        qs = Test.objects.filter(a_choice=SomeChoices.foo)
+        self.assert_query_cached(qs, [t])
+
     def test_iterator(self):
-        with self.assertNumQueries(1):
+        with self.assertNumQueries(2):
             data1 = list(Test.objects.iterator())
-        with self.assertNumQueries(0):
             data2 = list(Test.objects.iterator())
         self.assertListEqual(data2, data1)
         self.assertListEqual(data2, [self.t1, self.t2])
+
+        with self.settings(CACHALOT_CACHE_ITERATORS=True):
+            with self.assertNumQueries(1):
+                data1 = list(Test.objects.iterator())
+            with self.assertNumQueries(0):
+                data2 = list(Test.objects.iterator())
+            self.assertListEqual(data2, data1)
+            self.assertListEqual(data2, [self.t1, self.t2])
 
     def test_in_bulk(self):
         with self.assertNumQueries(1):
