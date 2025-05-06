@@ -33,6 +33,7 @@ SUPPORTED_CACHE_BACKENDS = {
     'django.core.cache.backends.dummy.DummyCache',
     'django.core.cache.backends.locmem.LocMemCache',
     'django.core.cache.backends.filebased.FileBasedCache',
+    'django.core.cache.backends.redis.RedisCache',
     'django_redis.cache.RedisCache',
     'django.core.cache.backends.memcached.MemcachedCache',
     'django.core.cache.backends.memcached.PyLibMCCache',
@@ -52,7 +53,7 @@ class Settings(object):
     CACHALOT_DATABASES = 'supported_only'
     CACHALOT_TIMEOUT = None
     CACHALOT_CACHE_RANDOM = False
-    CACHALOT_CACHE_ITERATORS = False
+    CACHALOT_CACHE_ITERATORS = True
     CACHALOT_INVALIDATE_RAW = True
     CACHALOT_ONLY_CACHABLE_TABLES = ()
     CACHALOT_ONLY_CACHABLE_APPS = ()
