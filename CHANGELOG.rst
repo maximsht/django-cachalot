@@ -4,6 +4,8 @@ What’s new in django-cachalot?
 -----
 - Add support for Django 6.0 and Python 3.8-3.14 (#277)
 - Fix #280 CachalotPanel not working in Django Debug Toolbar (#277)
+- Fix Recursion Issue in AtomicCache (Issue #274)
+- Allow custom databases (#247)
 
 2.8.0
 -----
