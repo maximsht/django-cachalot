@@ -74,7 +74,6 @@ class CachalotPanel(Panel):
             {
                 'invalidations_per_db': list(data.items()),
                 'multi_tenant_dbs': multi_tenant_dbs
-
             }
         )
 
