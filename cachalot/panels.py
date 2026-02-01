@@ -63,7 +63,7 @@ class CachalotPanel(Panel):
                     # Add indicator to show that this cached model is tenant-specific.
                     model_name = '{}*'.format(model_name)
                 data[db_alias].append(
-                    (model._meta.app_label, model_name, invalidation))
+                    (model._meta.app_label, model_name, timesince(invalidation)))
                 if self.last_invalidation is None \
                         or invalidation > self.last_invalidation:
                     self.last_invalidation = invalidation
@@ -72,7 +72,7 @@ class CachalotPanel(Panel):
                 multi_tenant_dbs.append(db_alias)
         self.record_stats(
             {
-                'invalidations_per_db': data.items(),
+                'invalidations_per_db': list(data.items()),
                 'multi_tenant_dbs': multi_tenant_dbs
 
             }
