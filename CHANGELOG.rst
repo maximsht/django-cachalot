@@ -1,5 +1,11 @@
 What’s new in django-cachalot?
 ==============================
+2.9.1
+-----
+- Fix cache invalidation on Django 6.0+ for UPDATE queries with RETURNING
+  (e.g. models with GeneratedField on PostgreSQL). Cachalot now patches
+  SQLUpdateCompiler.execute_returning_sql in addition to execute_sql.
+
 2.9.0
 -----
 - Add support for Django 6.0 and Python 3.8-3.14 (#277)

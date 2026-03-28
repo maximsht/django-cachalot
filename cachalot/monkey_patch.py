@@ -125,6 +125,13 @@ def _patch_orm():
         SQLCompiler.execute_sql = _patch_compiler(SQLCompiler.execute_sql)
     for compiler in WRITE_COMPILERS:
         compiler.execute_sql = _patch_write_compiler(compiler.execute_sql)
+    # Django 6.0+: SQLUpdateCompiler.execute_returning_sql bypasses execute_sql
+    # on databases that support RETURNING (PostgreSQL), so cache invalidation
+    # would be skipped for UPDATE queries with returning_fields.
+    if hasattr(SQLUpdateCompiler, 'execute_returning_sql'):
+        SQLUpdateCompiler.execute_returning_sql = _patch_write_compiler(
+            SQLUpdateCompiler.execute_returning_sql
+        )
 
 
 def _unpatch_orm():
@@ -132,6 +139,10 @@ def _unpatch_orm():
         SQLCompiler.execute_sql = SQLCompiler.execute_sql.__wrapped__
     for compiler in WRITE_COMPILERS:
         compiler.execute_sql = compiler.execute_sql.__wrapped__
+    if hasattr(SQLUpdateCompiler, 'execute_returning_sql') \
+            and hasattr(SQLUpdateCompiler.execute_returning_sql, '__wrapped__'):
+        SQLUpdateCompiler.execute_returning_sql = \
+            SQLUpdateCompiler.execute_returning_sql.__wrapped__
 
 
 def _patch_cursor():
