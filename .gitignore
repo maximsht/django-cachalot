@@ -129,3 +129,6 @@ dmypy.json
 
 # Session logs
 *.txt
+
+# Claude Code memory
+.memory/
